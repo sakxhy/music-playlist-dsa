@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Playlist Demo | Simple Linked List Visualizer</title>
+  <meta name="description" content="A simple, beginner-friendly visual demonstration of a Music Playlist built using a Singly Linked List in Data Structures & Algorithms.">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="simple.css">
+</head>
+<body>
+
+  <!-- Ambient subtle background grid -->
+  <div class="bg-grid-overlay"></div>
+
+  <div class="container">
+    
+    <!-- Top Navigation & View Switcher -->
+    <header class="top-nav">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">Music Playlist Visualizer</h1>
+          <p class="brand-subtitle">Data Structures (Singly Linked List) Made Simple</p>
+        </div>
+      </div>
+
+      <nav class="view-switcher" aria-label="View switcher">
+        <a href="simple.html" class="view-link active" title="Current: Simplified Demo">
+          🌱 Simple Demo
+        </a>
+        <a href="index.html" class="view-link" title="Switch to Full Developer Architecture Dashboard">
+          ⚡ Advanced View
+        </a>
+      </nav>
+    </header>
+
+    <!-- Friendly Introduction -->
+    <section class="intro-section">
+      <div class="intro-badge">
+        <span class="dot"></span>
+        <span>Beginner-Friendly DSA Demonstration</span>
+      </div>
+      <h2 class="intro-title">
+        How a Playlist Works with <span>Linked Nodes</span>
+      </h2>
+      <p class="intro-desc">
+        Each song is a <strong>Node</strong> connected to the next one by a <strong>Pointer arrow</strong>. 
+        Click <em>Next Song</em> to watch how playback steps through each pointer and loops back at the end!
+      </p>
+    </section>
+
+    <!-- Live Player & Pointer Card -->
+    <section class="player-card" aria-label="Now Playing Music Controls">
+      <div class="player-grid">
+        <div class="player-info">
+          <div class="disc-wrapper is-playing" id="discWrapper">
+            <div class="disc-center"></div>
+          </div>
+          <div class="player-track-info">
+            <span class="player-status-tag">
+              <span style="font-size: 0.9rem;">●</span> Active Song (currentSong)
+            </span>
+            <div class="player-song-title" id="playerSongTitle">"Blinding Lights"</div>
+            <div class="player-song-artist" id="playerSongArtist">by The Weeknd • 3.33 mins</div>
+            <div class="pointer-explanation" id="pointerExplanation">
+              <span>Pointer:</span> <strong>Node #1</strong> &rarr; <span>Next in memory:</span> <strong>"Shape of You"</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="player-controls">
+          <button class="btn btn-play" id="btnPlayToggle" title="Play or pause current playback">
+            <span>⏸</span> Pause
+          </button>
+          <button class="btn btn-next" id="btnNext" title="Advance to the next node (currentSong.next)">
+            <span>⏭</span> Next Song
+          </button>
+          <button class="btn btn-secondary" id="btnRestart" title="Jump pointer back to HEAD node">
+            <span>⏮</span> Restart (Head)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visualizer Section (The Node Chain) -->
+    <section class="visualizer-section" aria-label="Linked List Memory Chain Visualizer">
+      <div class="section-header">
+        <h3 class="section-heading">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--color-accent)">
+            <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+          </svg>
+          Singly Linked List Chain
+        </h3>
+        <span class="badge-counter" id="playlistSizeBadge">3 Songs</span>
+      </div>
+
+      <!-- Intuitive Legend -->
+      <div class="legend-bar">
+        <div class="legend-item">
+          <span class="legend-dot dot-head"></span>
+          <span><strong>HEAD:</strong> First song in playlist</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot dot-current"></span>
+          <span><strong>NOW PLAYING:</strong> Active song pointer</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot dot-node"></span>
+          <span><strong>.next Arrow:</strong> Memory pointer to following node</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot dot-null"></span>
+          <span><strong>NULL:</strong> End of the chain</span>
+        </div>
+      </div>
+
+      <!-- Horizontal Chain Track -->
+      <div class="chain-track" id="chainTrack">
+        <!-- Rendered dynamically by simple.js -->
+      </div>
+
+      <!-- Action Explanation Notice -->
+      <div class="action-notice" id="actionNotice">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0020 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 004 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+        </svg>
+        <div>
+          <strong>Looping Behavior:</strong> When the last song is reached, clicking <strong>Next Song</strong> 
+          detects <code>current.next == null</code> and automatically cycles back to <code>HEAD</code>.
+        </div>
+      </div>
+    </section>
+
+    <!-- Operations Section: Add Song & Search -->
+    <div class="operations-grid">
+      
+      <!-- Card 1: Add a Song -->
+      <div class="op-card">
+        <h3 class="op-card-title">
+          <span>➕</span> Add a New Song Node
+        </h3>
+        <form id="simpleAddForm">
+          <div class="form-row">
+            <input type="text" id="newSongTitle" class="form-input" placeholder="Song title (e.g. Starboy)" required>
+            <input type="text" id="newSongArtist" class="form-input" placeholder="Artist (e.g. The Weeknd)">
+          </div>
+          <button type="submit" class="btn btn-add">
+            Append Song to End of List
+          </button>
+        </form>
+
+        <div style="margin-top: 16px;">
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Or 1-Click Quick Add Presets:</span>
+          <div class="preset-buttons">
+            <button class="btn-preset" data-title="Believer" data-artist="Imagine Dragons">+ Believer</button>
+            <button class="btn-preset" data-title="As It Was" data-artist="Harry Styles">+ As It Was</button>
+            <button class="btn-preset" data-title="Stay" data-artist="The Kid LAROI">+ Stay</button>
+            <button class="btn-preset" data-title="Flowers" data-artist="Miley Cyrus">+ Flowers</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Search & Jump -->
+      <div class="op-card">
+        <h3 class="op-card-title">
+          <span>🔍</span> Find a Song in Playlist
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
+          Linear search traverses the list from <code>HEAD</code> checking each node title until found:
+        </p>
+        <form id="simpleSearchForm" class="search-form">
+          <input type="text" id="searchQuery" class="form-input" placeholder="Enter song title..." required>
+          <button type="submit" class="btn btn-search">
+            Search
+          </button>
+        </form>
+
+        <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: var(--radius-sm); font-size: 0.82rem; color: var(--text-dim);">
+          💡 <strong>Tip:</strong> You can also delete any song instantly by clicking the <strong>🗑️ Delete</strong> button directly on its card in the chain above!
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DSA Concepts Explained Simply -->
+    <section class="dsa-concepts-section">
+      <div class="dsa-grid">
+        
+        <div class="concept-card">
+          <div class="concept-card-icon concept-icon-blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/>
+            </svg>
+          </div>
+          <h4>1. What is a Node?</h4>
+          <p>
+            Think of each song card as a <strong>SongNode</strong> container. It holds the song data (Title &amp; Artist) plus a reference pointer (<code>.next</code>) that connects it to the subsequent song.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-card-icon concept-icon-purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+            </svg>
+          </div>
+          <h4>2. What is HEAD?</h4>
+          <p>
+            The <code>HEAD</code> pointer is the master bookmark for the start of the playlist. Without <code>HEAD</code>, we cannot find the beginning of our chain in memory.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <div class="concept-card-icon concept-icon-green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 15l-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z"/>
+            </svg>
+          </div>
+          <h4>3. How do Pointers Move?</h4>
+          <p>
+            When you click <em>Next Song</em>, the system simply updates <code>currentSong = currentSong.next</code>. Deleting a song bypasses the node: <code>prev.next = prev.next.next</code> in O(1) pointer updates.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="simple.js"></script>
+</body>
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Playlist Manager | DSA Singly Linked List Project</title>
+  <meta name="description" content="Visual demonstration and interactive simulation of a Singly Linked List Music Playlist Manager in Data Structures & Algorithms.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient Grid Background -->
+  <div class="bg-grid"></div>
+
+  <div class="container">
+    
+    <!-- Header Section -->
+    <header class="header">
+      <div class="brand-wrapper">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">Music Playlist Manager</h1>
+          <p class="brand-subtitle">Data Structures &amp; Algorithms Mini Project</p>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <a href="simple.html" class="badge badge-emerald" style="text-decoration: none; font-weight: 700; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #34d399; transition: transform 0.2s;" title="Switch to beginner-friendly simple demo">
+          🌱 Switch to Simple Demo &rarr;
+        </a>
+        <span class="badge badge-violet">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+          Singly Linked List
+        </span>
+        <span class="badge badge-cyan">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          Head &amp; Current Pointers
+        </span>
+      </div>
+    </header>
+
+    <!-- Hero Concept Banner -->
+    <section class="hero">
+      <div class="hero-pill">
+        <span>Linked List Visualization</span> &bull; <span>Node Pointer Management</span>
+      </div>
+      <h2 class="hero-title">
+        Visualizing Playlists with <span class="highlight">Singly Linked Lists</span>
+      </h2>
+      <p class="hero-desc">
+        Demonstrating how custom <code>SongNode</code> objects chain memory pointers together, 
+        tracking <code>head</code>, advancing playback with <code>currentSong.next</code>, 
+        and looping back upon reaching the end.
+      </p>
+    </section>
+
+    <!-- Now Playing Interactive Banner -->
+    <section class="player-banner" id="nowPlayingBanner">
+      <div class="current-track-info">
+        <div class="track-art">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+          </svg>
+          <div class="audio-waves" id="audioWaves">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+          </div>
+        </div>
+
+        <div class="track-meta">
+          <div class="now-playing-tag">
+            <span class="pulse-dot"></span>
+            <span>Currently Playing (<code>currentSong</code>)</span>
+          </div>
+          <h3 class="track-title" id="bannerTitle">"Blinding Lights"</h3>
+          <p class="track-artist-duration" id="bannerArtistDuration">by The Weeknd &bull; 3.33 mins</p>
+          <div class="pointer-chip" id="bannerPointerInfo">
+            <span>Pointer:</span> <code>0x4F8B</code> &rarr; <span>Next:</span> <code>0x5C1A</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="player-quick-controls">
+        <button class="btn-ctrl btn-ctrl-emerald" id="btnPlayCurrent" title="Call playCurrent() in Java">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          Play Current
+        </button>
+        <button class="btn-ctrl btn-ctrl-primary" id="btnPlayNext" title="Call playNext() in Java">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+          </svg>
+          Play Next
+        </button>
+      </div>
+    </section>
+
+    <!-- Visualizer Canvas -->
+    <section class="visualizer-card">
+      <div class="section-title-wrap">
+        <div>
+          <h2 class="section-title">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--accent-cyan)">
+              <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+            </svg>
+            Linked List Memory Architecture
+          </h2>
+          <p class="section-subtitle">Real-time representation of <code>SongNode</code> heap allocations and pointer references</p>
+        </div>
+        <div>
+          <span class="badge badge-violet" id="playlistSizeBadge">Size: 4 Songs</span>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="visualizer-legend">
+        <div class="legend-item">
+          <div class="legend-swatch legend-head"></div>
+          <span><strong>HEAD Pointer:</strong> Start of list</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch legend-current"></div>
+          <span><strong>CURRENT SONG:</strong> Active playback pointer</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch legend-node"></div>
+          <span><strong>SongNode:</strong> Title, Artist, Duration, Next</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch legend-null"></div>
+          <span><strong>NULL:</strong> Terminal tail reference</span>
+        </div>
+      </div>
+
+      <!-- Horizontal Scrollable Track of Nodes -->
+      <div class="linked-list-track" id="linkedListTrack">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+
+      <!-- Loopback Notice -->
+      <div class="loopback-info-bar">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0020 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 004 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+        </svg>
+        <div>
+          <strong>Circular Playback Logic (playNext):</strong> 
+          When <code>currentSong.next == null</code>, the playlist resets <code>currentSong = head</code>, providing continuous looping through a linear singly linked list.
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Grid: Operations & Simulated Console -->
+    <div class="main-grid">
+      
+      <!-- Operations Dashboard -->
+      <div class="card">
+        <div class="section-title-wrap">
+          <h3 class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--accent-violet)">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            Playlist Operations
+          </h3>
+          <span class="section-subtitle">Java Menu Options 1 - 6</span>
+        </div>
+
+        <!-- Operation Tabs -->
+        <div class="op-tabs">
+          <button class="op-tab-btn active" data-tab="tabAdd">1. Add Song</button>
+          <button class="op-tab-btn" data-tab="tabRemove">2. Remove Song</button>
+          <button class="op-tab-btn" data-tab="tabSearch">6. Search</button>
+          <button class="op-tab-btn" data-tab="tabActions">Playback</button>
+        </div>
+
+        <!-- 1. Add Song Form -->
+        <div class="op-panel active" id="tabAdd">
+          <form id="formAddSong">
+            <div class="form-group">
+              <label class="form-label" for="inputSongTitle">Song Title</label>
+              <input type="text" id="inputSongTitle" class="form-input" placeholder="e.g. Starboy" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="inputSongArtist">Artist Name</label>
+                <input type="text" id="inputSongArtist" class="form-input" placeholder="e.g. The Weeknd" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inputSongDuration">Duration (mins)</label>
+                <input type="number" step="0.01" min="0.1" id="inputSongDuration" class="form-input" placeholder="e.g. 3.82" required>
+              </div>
+            </div>
+            <button type="submit" class="btn-submit btn-submit-cyan" id="btnAddSongSubmit">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+              </svg>
+              Execute: addSong(title, artist, duration)
+            </button>
+          </form>
+        </div>
+
+        <!-- 2. Remove Song Form -->
+        <div class="op-panel" id="tabRemove">
+          <form id="formRemoveSong">
+            <div class="form-group">
+              <label class="form-label" for="inputRemoveTitle">Song Title to Remove</label>
+              <input type="text" id="inputRemoveTitle" class="form-input" placeholder="Enter exact title (case-insensitive)" required>
+            </div>
+            <button type="submit" class="btn-submit btn-submit-rose" id="btnRemoveSongSubmit">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+              </svg>
+              Execute: removeSong(title)
+            </button>
+          </form>
+        </div>
+
+        <!-- 6. Search Song Form -->
+        <div class="op-panel" id="tabSearch">
+          <form id="formSearchSong">
+            <div class="form-group">
+              <label class="form-label" for="inputSearchTitle">Song Title to Search</label>
+              <input type="text" id="inputSearchTitle" class="form-input" placeholder="Enter song title to search" required>
+            </div>
+            <button type="submit" class="btn-submit btn-submit-amber" id="btnSearchSongSubmit">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+              </svg>
+              Execute: searchSong(title)
+            </button>
+          </form>
+        </div>
+
+        <!-- Playback Actions Panel -->
+        <div class="op-panel" id="tabActions">
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
+            Trigger list traversal and inspect pointer locations directly:
+          </p>
+          <div class="quick-action-grid">
+            <button class="btn-ctrl btn-ctrl-emerald" id="btnActionPlayCurrent" style="justify-content: center;">
+              4. playCurrent()
+            </button>
+            <button class="btn-ctrl btn-ctrl-primary" id="btnActionPlayNext" style="justify-content: center;">
+              5. playNext()
+            </button>
+            <button class="btn-ctrl" id="btnActionDisplay" style="justify-content: center;">
+              3. displayPlaylist()
+            </button>
+            <button class="btn-ctrl" id="btnActionReset" style="justify-content: center; color: var(--accent-rose);">
+              Reset Default
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Simulated Java Console Terminal -->
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+          <span class="terminal-title">bash &bull; java Main (System.out)</span>
+          <button id="btnClearTerminal" style="background:transparent; border:none; color:var(--text-dim); font-size:0.75rem; cursor:pointer;" title="Clear Console">
+            clear
+          </button>
+        </div>
+        <div class="terminal-body" id="terminalOutput">
+          <!-- Populated by JavaScript with simulated Java logs -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DSA Theory & Code Breakdown -->
+    <section class="theory-section">
+      <div class="section-title-wrap">
+        <div>
+          <h2 class="section-title">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--accent-emerald)">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/>
+            </svg>
+            Data Structures &amp; Algorithms Breakdown
+          </h2>
+          <p class="section-subtitle">How singly linked lists power this Music Playlist Manager</p>
+        </div>
+      </div>
+
+      <div class="theory-grid">
+        <!-- Card 1 -->
+        <div class="concept-card">
+          <div class="concept-header">
+            <div class="concept-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+            </div>
+            <h4 class="concept-title">SongNode Class</h4>
+          </div>
+          <p class="concept-desc">
+            Each song is encapsulated inside a <code>SongNode</code> holding three data fields (<code>title</code>, <code>artist</code>, <code>duration</code>) and one reference pointer (<code>next</code>) pointing to the next node in memory.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="concept-card">
+          <div class="concept-header">
+            <div class="concept-icon">
+              <svg viewBox="0 0 24 24"><path d="M19 15l-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z"/></svg>
+            </div>
+            <h4 class="concept-title">Pointer Relinking</h4>
+          </div>
+          <p class="concept-desc">
+            In <code>removeSong(title)</code>, removing an internal node avoids array shifting. We simply bypass the target node by updating the predecessor: <code>temp.next = temp.next.next</code> in $O(1)$ pointer operations.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="concept-card">
+          <div class="concept-header">
+            <div class="concept-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0020 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 004 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+            </div>
+            <h4 class="concept-title">Loopback Traversal</h4>
+          </div>
+          <p class="concept-desc">
+            Standard singly linked lists terminate at <code>null</code>. The <code>playNext()</code> method implements a cyclic wrap-around: if <code>currentSong.next == null</code>, it resets <code>currentSong = head</code>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Complexity Analysis Table -->
+      <div class="complexity-table-wrap card" style="margin-top: 24px;">
+        <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 14px; color: #ffffff;">Time &amp; Space Complexity Analysis</h4>
+        <table class="complexity-table">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Java Method</th>
+              <th>Time Complexity</th>
+              <th>Space Complexity</th>
+              <th>Explanation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Add to End</strong></td>
+              <td><code>addSong(title, artist, duration)</code></td>
+              <td><span class="comp-badge comp-on">O(n)</span></td>
+              <td><span class="comp-badge comp-o1">O(1)</span></td>
+              <td>Traverses from <code>head</code> to the final node, then attaches <code>temp.next = newSong</code>.</td>
+            </tr>
+            <tr>
+              <td><strong>Remove Song</strong></td>
+              <td><code>removeSong(title)</code></td>
+              <td><span class="comp-badge comp-on">O(n)</span></td>
+              <td><span class="comp-badge comp-o1">O(1)</span></td>
+              <td>Linear search to locate predecessor; pointer bypass is $O(1)$.</td>
+            </tr>
+            <tr>
+              <td><strong>Play Next</strong></td>
+              <td><code>playNext()</code></td>
+              <td><span class="comp-badge comp-o1">O(1)</span></td>
+              <td><span class="comp-badge comp-o1">O(1)</span></td>
+              <td>Direct single-step pointer move: <code>currentSong = currentSong.next</code>.</td>
+            </tr>
+            <tr>
+              <td><strong>Search Song</strong></td>
+              <td><code>searchSong(title)</code></td>
+              <td><span class="comp-badge comp-on">O(n)</span></td>
+              <td><span class="comp-badge comp-o1">O(1)</span></td>
+              <td>Sequential traversal comparing title equality from <code>head</code> to target.</td>
+            </tr>
+            <tr>
+              <td><strong>Display All</strong></td>
+              <td><code>displayPlaylist()</code></td>
+              <td><span class="comp-badge comp-on">O(n)</span></td>
+              <td><span class="comp-badge comp-o1">O(1)</span></td>
+              <td>Traverses all $n$ nodes printing formatted song details and pointer marks.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Collapsible Java Source Code -->
+      <div class="code-accordion">
+        <div class="code-accordion-header" id="codeAccordionToggle">
+          <h4>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--accent-cyan)">
+              <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+            </svg>
+            View Original Java Source Code (SongNode.java &amp; Playlist.java)
+          </h4>
+          <span style="color: var(--accent-cyan); font-size: 0.85rem;" id="codeToggleText">Click to Expand &#9662;</span>
+        </div>
+        <div class="code-accordion-content" id="codeAccordionContent" style="display: none;">
+          <pre><code>import java.util.Scanner;
+
+class SongNode {
+    String title, artist;
+    double duration;
+    SongNode next;
+
+    public SongNode(String title, String artist, double duration) {
+        this.title = title;
+        this.artist = artist;
+        this.duration = duration;
+        this.next = null;
+    }
+
+    public String toString() {
+        return "\"" + title + "\" by " + artist + " (" + duration + " mins)";
+    }
+}
+
+class Playlist {
+    private SongNode head = null, currentSong = null;
+    private int size = 0;
+
+    public void addSong(String title, String artist, double duration) {
+        SongNode newSong = new SongNode(title, artist, duration);
+        if (head == null) {
+            head = currentSong = newSong;
+        } else {
+            SongNode temp = head;
+            while (temp.next != null) temp = temp.next;
+            temp.next = newSong;
+        }
+        size++;
+        System.out.println("-> Added: " + newSong);
+    }
+
+    public void removeSong(String title) {
+        if (head == null) {
+            System.out.println("-> Playlist is empty. Nothing to remove.");
+            return;
+        }
+
+        if (head.title.equalsIgnoreCase(title)) {
+            if (currentSong == head) currentSong = head.next;
+            head = head.next;
+            size--;
+            System.out.println("-> Removed song: \"" + title + "\"");
+            return;
+        }
+        SongNode temp = head;
+        while (temp.next != null && !temp.next.title.equalsIgnoreCase(title)) {
+            temp = temp.next;
+        }
+        if (temp.next != null) {
+            if (currentSong == temp.next) {
+                currentSong = (temp.next.next != null) ? temp.next.next : head;
+            }
+            temp.next = temp.next.next;
+            size--;
+            System.out.println("-> Removed song: \"" + title + "\"");
+        } else {
+            System.out.println("-> Song titled \"" + title + "\" not found in the playlist.");
+        }
+    }
+
+    public void displayPlaylist() {
+        if (head == null) {
+            System.out.println("-> Playlist is empty.");
+            return;
+        }
+
+        System.out.println("\n--- Current Playlist (" + size + " songs) ---");
+        SongNode temp = head;
+        int index = 1;
+        while (temp != null) {
+            String marker = (temp == currentSong) ? " [Currently Playing]" : "";
+            System.out.println(index++ + ". " + temp + marker);
+            temp = temp.next;
+        }
+        System.out.println("--------------------------------");
+    }
+
+    public void playCurrent() {
+        if (currentSong == null) System.out.println("-> Playlist is empty. No song to play.");
+        else System.out.println("-> Now Playing: " + currentSong);
+    }
+
+    public void playNext() {
+        if (currentSong == null) {
+            System.out.println("-> Playlist is empty.");
+            return;
+        }
+        if (currentSong.next != null) {
+            currentSong = currentSong.next;
+            System.out.println("-> Played Next: " + currentSong);
+        } else {
+            System.out.println("-> Reached the end of the playlist. Loop back to start.");
+            currentSong = head;
+            if (currentSong != null) System.out.println("-> Now Playing: " + currentSong);
+        }
+    }
+
+    public void searchSong(String title) {
+        SongNode temp = head;
+        int position = 1;
+        while (temp != null) {
+            if (temp.title.equalsIgnoreCase(title)) {
+                System.out.println("-> Found: " + temp + " at position " + position);
+                return;
+            }
+            temp = temp.next;
+            position++;
+        }
+        System.out.println("-> Song titled \"" + title + "\" not found.");
+    }
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Data Structures &amp; Algorithms &bull; Industrial Practice Mini Project &bull; Singly Linked List Implementation</p>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
