@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Music Playlist Management System — Project Writeup</title>
+<style>
+    @page {
+        size: A4;
+        margin: 20mm 16mm 20mm 16mm;
+        @bottom-right {
+            content: counter(page);
+            font-size: 9pt;
+            color: #64748b;
+        }
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #1e293b;
+        line-height: 1.6;
+        font-size: 11pt;
+        background: #ffffff;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Header Banner */
+    .header-card {
+        border-bottom: 2px solid #3b82f6;
+        padding-bottom: 16px;
+        margin-bottom: 24px;
+    }
+
+    .badge {
+        display: inline-block;
+        background: #eff6ff;
+        color: #2563eb;
+        font-weight: 600;
+        font-size: 9pt;
+        padding: 4px 10px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    h1 {
+        font-size: 20pt;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 4px 0 6px 0;
+        line-height: 1.25;
+    }
+
+    .subtitle {
+        font-size: 12pt;
+        color: #475569;
+        font-weight: 500;
+        margin: 0 0 16px 0;
+    }
+
+    .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px 24px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 9.5pt;
+    }
+
+    .meta-item strong {
+        color: #334155;
+    }
+
+    .meta-item a {
+        color: #2563eb;
+        text-decoration: none;
+        word-break: break-all;
+    }
+
+    /* Section Headings */
+    h2 {
+        font-size: 13.5pt;
+        font-weight: 700;
+        color: #0f172a;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 6px;
+        margin-top: 26px;
+        margin-bottom: 12px;
+        page-break-after: avoid;
+    }
+
+    h3 {
+        font-size: 11.5pt;
+        font-weight: 600;
+        color: #1e3a8a;
+        margin-top: 18px;
+        margin-bottom: 8px;
+        page-break-after: avoid;
+    }
+
+    p {
+        margin: 0 0 10px 0;
+        text-align: justify;
+    }
+
+    ul, ol {
+        margin: 0 0 12px 0;
+        padding-left: 22px;
+    }
+
+    li {
+        margin-bottom: 4px;
+    }
+
+    /* Diagrams & ASCII art */
+    .diagram-card {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        border-left: 4px solid #3b82f6;
+        border-radius: 6px;
+        padding: 10px 14px;
+        margin: 12px 0;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 9pt;
+        white-space: pre-wrap;
+        line-height: 1.35;
+        page-break-inside: avoid;
+    }
+
+    /* Code Blocks */
+    pre {
+        background: #0f172a;
+        color: #f8fafc;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        font-size: 8.8pt;
+        line-height: 1.45;
+        overflow-x: hidden;
+        margin: 10px 0 14px 0;
+        page-break-inside: avoid;
+        border: 1px solid #334155;
+    }
+
+    code {
+        font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+        font-size: 9.5pt;
+        background: #f1f5f9;
+        color: #0f172a;
+        padding: 1px 5px;
+        border-radius: 4px;
+    }
+
+    pre code {
+        background: transparent;
+        color: inherit;
+        padding: 0;
+    }
+
+    .comment { color: #94a3b8; font-style: italic; }
+    .keyword { color: #f472b6; font-weight: 600; }
+    .function { color: #60a5fa; }
+    .string { color: #34d399; }
+    .variable { color: #fbbf24; }
+
+    /* Callout Card */
+    .callout {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-left: 4px solid #16a34a;
+        padding: 10px 14px;
+        border-radius: 6px;
+        margin: 14px 0;
+        font-size: 9.5pt;
+        page-break-inside: avoid;
+    }
+
+    .callout strong {
+        color: #15803d;
+    }
+
+    .footer-note {
+        margin-top: 30px;
+        padding-top: 12px;
+        border-top: 1px solid #e2e8f0;
+        font-size: 8.5pt;
+        color: #64748b;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<div class="header-card">
+    <div class="badge">Data Structures &amp; Algorithms Mini Project Report</div>
+    <h1>Music Playlist Management System</h1>
+    <div class="subtitle">Implementation of a Singly Linked List in an Interactive Web Application</div>
+    
+    <div class="meta-grid">
+        <div class="meta-item"><strong>Student Name:</strong> Sakshi</div>
+        <div class="meta-item"><strong>Course:</strong> DSA / Industrial Practice Lab</div>
+        <div class="meta-item"><strong>GitHub Repository:</strong> <a href="https://github.com/sakxhy/music-playlist-dsa">github.com/sakxhy/music-playlist-dsa</a></div>
+        <div class="meta-item"><strong>Live Web Demo:</strong> <a href="https://sakxhy.github.io/music-playlist-dsa/simple.html">sakxhy.github.io/music-playlist-dsa/simple.html</a></div>
+    </div>
+</div>
+
+<h2>1. Project Overview</h2>
+<p>
+    The <strong>Music Playlist Manager</strong> is a modern interactive web application developed to demonstrate how fundamental data structures solve real-world problems. In commercial audio streaming applications such as Spotify or Apple Music, users interact with a dynamic song queue—adding songs to play next, appending songs to the end of the queue, skipping to the next track, or reversing the playback order.
+</p>
+<p>
+    This project models this playback system using a <strong>Singly Linked List</strong>. Because audio tracks in a playlist are played sequentially one after another, pointer-based node linking provides an intuitive, elegant, and realistic software implementation.
+</p>
+
+<h2>2. How Singly Linked List is Implemented</h2>
+<p>
+    A Singly Linked List is a linear data structure composed of individual, dynamically allocated <strong>Nodes</strong>. Unlike contiguous memory arrays, each node in a linked list exists independently and connects to subsequent items via a reference pointer.
+</p>
+
+<h3>2.1 The Song Node (<code>SongNode</code>)</h3>
+<p>
+    Each audio track is encapsulated as an instance of <code>SongNode</code>. Every node contains two distinct components:
+</p>
+<ul>
+    <li><strong>Data Fields:</strong> Metadata properties describing the song, including <code>title</code>, <code>artist</code>, and <code>duration</code>.</li>
+    <li><strong>Pointer Field (<code>next</code>):</strong> A pointer variable storing the memory reference of the subsequent <code>SongNode</code>. If the node is the last song in the playlist, <code>next</code> is assigned <code>null</code>.</li>
+</ul>
+
+<div class="diagram-card">
++-------------------------------------------------------------+
+|                          SongNode                           |
++-------------------------------------------------------------+
+|  Data:    title, artist, duration                           |
+|  Pointer: next ───> (Points to next SongNode, or NULL)      |
++-------------------------------------------------------------+
+</div>
+
+<pre><code><span class="keyword">class</span> <span class="function">SongNode</span> {
+    <span class="keyword">constructor</span>(title, artist, duration) {
+        <span class="variable">this</span>.title = title;        <span class="comment">// Song Name</span>
+        <span class="variable">this</span>.artist = artist;      <span class="comment">// Artist Name</span>
+        <span class="variable">this</span>.duration = duration;  <span class="comment">// Song Length (mm:ss)</span>
+        <span class="variable">this</span>.next = <span class="keyword">null</span>;          <span class="comment">// Pointer link to next track</span>
+    }
+}</code></pre>
+
+<h3>2.2 The Playlist Manager Structure</h3>
+<p>
+    The higher-level playlist operations are managed by a <code>PlaylistManager</code> class. This controller tracks three essential reference markers:
+</p>
+<ul>
+    <li><strong><code>head</code>:</strong> Points directly to the first node of the playlist. If <code>head === null</code>, the playlist is empty.</li>
+    <li><strong><code>currentTrack</code>:</strong> Points to the specific node currently being played.</li>
+    <li><strong><code>size</code>:</strong> An integer counter tracking the total number of songs in the queue.</li>
+</ul>
+
+<div class="diagram-card">
+HEAD                                                        TAIL
+ [Song 1] ────.next────> [Song 2] ────.next────> [Song 3] ────.next────> NULL
+ (Active)                (Next Up)               (Last Song)
+</div>
+
+<pre><code><span class="keyword">class</span> <span class="function">PlaylistManager</span> {
+    <span class="keyword">constructor</span>() {
+        <span class="variable">this</span>.head = <span class="keyword">null</span>;         <span class="comment">// Entry point to linked list</span>
+        <span class="variable">this</span>.currentTrack = <span class="keyword">null</span>; <span class="comment">// Active song pointer</span>
+        <span class="variable">this</span>.size = 0;            <span class="comment">// Total song count</span>
+    }
+}</code></pre>
+
+<h2>3. Basic Operations &amp; Implementation Details</h2>
+
+<h3>3.1 Insertion Operations</h3>
+
+<h4>A. Insertion at Head ("Play Next")</h4>
+<p>
+    Inserts a newly added song at the very beginning of the playlist so that it is positioned as the immediate next song to play.
+</p>
+<ol>
+    <li>Create a new node <code>newNode = new SongNode(title, artist, duration)</code>.</li>
+    <li>Link the new node forward: <code>newNode.next = this.head</code>.</li>
+    <li>Reassign the head reference: <code>this.head = newNode</code>.</li>
+    <li>Increment the playlist size counter.</li>
+</ol>
+
+<pre><code><span class="function">insertAtHead</span>(title, artist, duration) {
+    <span class="keyword">const</span> newNode = <span class="keyword">new</span> <span class="function">SongNode</span>(title, artist, duration);
+    newNode.next = <span class="variable">this</span>.head;
+    <span class="variable">this</span>.head = newNode;
+    <span class="variable">this</span>.size++;
+
+    <span class="keyword">if</span> (!<span class="variable">this</span>.currentTrack) {
+        <span class="variable">this</span>.currentTrack = <span class="variable">this</span>.head;
+    }
+}</code></pre>
+
+<h4>B. Insertion at Tail ("Add to Queue")</h4>
+<p>
+    Appends a new track to the very end of the playlist.
+</p>
+<ol>
+    <li>Allocate the new <code>SongNode</code>.</li>
+    <li>If the playlist is empty (<code>this.head === null</code>), set <code>this.head = newNode</code>.</li>
+    <li>Otherwise, initialize a temporary traversal pointer <code>temp = this.head</code>.</li>
+    <li>Advance <code>temp = temp.next</code> until reaching the last node where <code>temp.next === null</code>.</li>
+    <li>Connect the last node to the new node: <code>temp.next = newNode</code>.</li>
+</ol>
+
+<pre><code><span class="function">insertAtTail</span>(title, artist, duration) {
+    <span class="keyword">const</span> newNode = <span class="keyword">new</span> <span class="function">SongNode</span>(title, artist, duration);
+    <span class="keyword">if</span> (!<span class="variable">this</span>.head) {
+        <span class="variable">this</span>.head = newNode;
+        <span class="variable">this</span>.currentTrack = newNode;
+    } <span class="keyword">else</span> {
+        <span class="keyword">let</span> temp = <span class="variable">this</span>.head;
+        <span class="keyword">while</span> (temp.next !== <span class="keyword">null</span>) {
+            temp = temp.next;
+        }
+        temp.next = newNode;
+    }
+    <span class="variable">this</span>.size++;
+}</code></pre>
+
+<h4>C. Insertion at a Specific Position</h4>
+<p>
+    Places a song at a designated 0-based index. Traverses to index <code>k - 1</code>, connects <code>newNode.next = prev.next</code>, and sets <code>prev.next = newNode</code>.
+</p>
+
+<h3>3.2 Deletion Operations</h3>
+
+<h4>A. Deletion from Head</h4>
+<p>
+    Removes the first track from the playlist by advancing the head reference: <code>this.head = this.head.next</code>.
+</p>
+
+<pre><code><span class="function">deleteHead</span>() {
+    <span class="keyword">if</span> (!<span class="variable">this</span>.head) <span class="keyword">return false</span>;
+    <span class="keyword">const</span> deletedNode = <span class="variable">this</span>.head;
+    <span class="variable">this</span>.head = <span class="variable">this</span>.head.next; <span class="comment">// Move head forward</span>
+    <span class="keyword">if</span> (<span class="variable">this</span>.currentTrack === deletedNode) {
+        <span class="variable">this</span>.currentTrack = <span class="variable">this</span>.head;
+    }
+    <span class="variable">this</span>.size--;
+    <span class="keyword">return true</span>;
+}</code></pre>
+
+<h4>B. Deletion by Position / Specific Song</h4>
+<p>
+    Removes any song node from the middle or end of the playlist without breaking chain continuity.
+</p>
+<ol>
+    <li>If index is 0, invoke <code>deleteHead()</code>.</li>
+    <li>Maintain two stepping pointers: <code>prev</code> and <code>curr</code>.</li>
+    <li>Traverse until <code>curr</code> reaches the target song to be deleted.</li>
+    <li>Bypass the target node: <code>prev.next = curr.next</code>.</li>
+    <li>Decrement the playlist size.</li>
+</ol>
+
+<div class="diagram-card">
+Before Deletion:
+ [Song A] ───.next───> [Song B (Target)] ───.next───> [Song C]
+
+After Deletion (Bypassing Song B):
+ [Song A] ────────────────────.next──────────────────> [Song C]
+</div>
+
+<pre><code><span class="function">deleteAtPosition</span>(index) {
+    <span class="keyword">if</span> (!<span class="variable">this</span>.head || index &lt; 0 || index &gt;= <span class="variable">this</span>.size) <span class="keyword">return false</span>;
+    <span class="keyword">if</span> (index === 0) <span class="keyword">return</span> <span class="variable">this</span>.<span class="function">deleteHead</span>();
+
+    <span class="keyword">let</span> prev = <span class="keyword">null</span>;
+    <span class="keyword">let</span> curr = <span class="variable">this</span>.head;
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = 0; i &lt; index; i++) {
+        prev = curr;
+        curr = curr.next;
+    }
+
+    prev.next = curr.next; <span class="comment">// Bridge pointer over deleted node</span>
+    <span class="keyword">if</span> (<span class="variable">this</span>.currentTrack === curr) {
+        <span class="variable">this</span>.currentTrack = curr.next || <span class="variable">this</span>.head;
+    }
+    <span class="variable">this</span>.size--;
+    <span class="keyword">return true</span>;
+}</code></pre>
+
+<h3>3.3 Traversal &amp; Playback Operations</h3>
+
+<h4>A. Sequential Playback ("Next Song")</h4>
+<p>
+    Advances playback to the subsequent track in the chain. Reads <code>this.currentTrack.next</code> and reassigns <code>this.currentTrack</code>. If <code>.next</code> is <code>null</code>, playback concludes cleanly.
+</p>
+
+<pre><code><span class="function">playNext</span>() {
+    <span class="keyword">if</span> (<span class="variable">this</span>.currentTrack &amp;&amp; <span class="variable">this</span>.currentTrack.next) {
+        <span class="variable">this</span>.currentTrack = <span class="variable">this</span>.currentTrack.next;
+        <span class="keyword">return true</span>;
+    }
+    <span class="keyword">return false</span>; <span class="comment">// Reached end of playlist (NULL)</span>
+}</code></pre>
+
+<h4>B. Visual Rendering Traversal</h4>
+<p>
+    Traverses from <code>this.head</code> node-by-node, rendering each song's title, artist, duration, and an explicit visual pointer arrow (<code>── .next ──&gt;</code>) on the webpage. Upon encountering <code>null</code>, it renders a terminal <code>[NULL (End of Chain)]</code> box.
+</p>
+
+<h4>C. Searching a Track</h4>
+<p>
+    Iterates sequentially starting from <code>head</code>, checking if the query string matches any node's <code>title</code> or <code>artist</code>. When found, the node is highlighted and scrolled into focus.
+</p>
+
+<h3>3.4 In-place Playlist Reversal</h3>
+<p>
+    Inverts the playlist order so that the last track becomes the new <code>head</code>. It reverses pointer orientations in a single linear pass using three pointers (<code>prev</code>, <code>curr</code>, <code>next</code>):
+</p>
+
+<div class="diagram-card">
+Initial Order:   [Song 1] ────> [Song 2] ────> [Song 3] ────> NULL
+Reversed Order:  [Song 3] ────> [Song 2] ────> [Song 1] ────> NULL
+</div>
+
+<pre><code><span class="function">reverse</span>() {
+    <span class="keyword">let</span> prev = <span class="keyword">null</span>;
+    <span class="keyword">let</span> curr = <span class="variable">this</span>.head;
+    <span class="keyword">let</span> next = <span class="keyword">null</span>;
+
+    <span class="keyword">while</span> (curr !== <span class="keyword">null</span>) {
+        next = curr.next;   <span class="comment">// 1. Save subsequent node reference</span>
+        curr.next = prev;   <span class="comment">// 2. Reverse pointer to previous node</span>
+        prev = curr;        <span class="comment">// 3. Move prev forward</span>
+        curr = next;        <span class="comment">// 4. Move curr forward</span>
+    }
+    <span class="variable">this</span>.head = prev;       <span class="comment">// 5. Update head to former tail</span>
+}</code></pre>
+
+<h3>3.5 Repeat Mode / Loop Handling</h3>
+<p>
+    When repeat mode is active, the tail's <code>.next</code> connects back to <code>head</code>, forming a circular sequence. To ensure safety and prevent browser crashes during DOM rendering, the application executes <strong>Floyd's Cycle-Finding Algorithm</strong> (using dual <code>slow</code> and <code>fast</code> pointers) to detect loops dynamically.
+</p>
+
+<h2>4. Interactive User Interface Features</h2>
+<ul>
+    <li><strong>Simple Visualizer View (<code>simple.html</code>):</strong> Beginner-friendly interface showcasing nodes with <code>HEAD</code>, <code>PLAYING</code> badges, visual pointer arrows, and 1-click test presets (Pop Hits, Rock Classics, Coding Chill).</li>
+    <li><strong>Studio View (<code>index.html</code>):</strong> Full-featured audio player simulator with sound wave canvas animations, node search, and position-based insertions.</li>
+</ul>
+
+<div class="callout">
+    <strong>Live Cloud Deployment:</strong> The project is published and permanently accessible via GitHub Pages at:
+    <br>
+    <a href="https://sakxhy.github.io/music-playlist-dsa/simple.html">https://sakxhy.github.io/music-playlist-dsa/simple.html</a>
+</div>
+
+<h2>5. Conclusion</h2>
+<p>
+    This project provides a complete, working implementation of a <strong>Singly Linked List</strong> applied to a real-world multimedia playback system. By mapping physical songs to nodes and playback progression to pointer traversals, it clearly demonstrates dynamic node creation, insertion at head/tail, deletion by index, linear traversal, and in-place list reversal.
+</p>
+
+<div class="footer-note">
+    Music Playlist Manager &bull; Industrial Practice / DSA Mini Project &bull; Sakshi &bull; 2026
+</div>
+
+</body>
+</html>
